@@ -8,7 +8,7 @@ var when = require('when');
 var readFile = nodefn.lift(fs.readFile);
 var unlink = nodefn.lift(fs.unlink);
 var AWS = require('aws-sdk');
-var config;
+var config = require('../config')._config.aws;
 
 
 module.exports = function(options) {
@@ -51,9 +51,6 @@ module.exports.save = function(image) {
             ContentType: image.type,
             CacheControl: 'max-age=' + (30 * 24 * 60 * 60) // 30 days
         });
-    })
-    .then(function(result) {
-        return unlink(image.path);
     })
     .then(function() {
         return when.resolve(awsPath + targetFilename);
